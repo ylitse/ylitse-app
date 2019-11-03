@@ -14,7 +14,7 @@ module.exports = {
     'react',
     'react-hooks',
     'react-native',
-],
+  ],
   settings: {
     'import/resolver': {
       node: {
@@ -22,6 +22,10 @@ module.exports = {
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts'],
       },
     },
+  },
+  parserOptions: {
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
   rules: {
     '@typescript-eslint/indent': ['error', 2],
@@ -31,10 +35,10 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
-        'args': 'after-used',
-        'argsIgnorePattern': '^_$',
-        'ignoreRestSiblings': true
-      }
+        args: 'after-used',
+        argsIgnorePattern: '^_$',
+        ignoreRestSiblings: true,
+      },
     ],
     '@typescript-eslint/restrict-plus-operands': 'error',
     'react/prop-types': ['off'],

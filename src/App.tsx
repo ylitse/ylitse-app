@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
-
+import { SafeAreaView, StatusBar } from 'react-native';
 import {
   Header,
   LearnMoreLinks,
@@ -15,86 +7,79 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import styled from 'styled-components/native';
 
 const App: React.FC = () => (
   <>
     <StatusBar barStyle="dark-content" />
     <SafeAreaView>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}
-      >
+      <ScrollBody contentInsetAdjustmentBehavior="automatic">
         <Header />
-        <View style={styles.body}>
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Step One</Text>
-            <Text style={styles.sectionDescription}>
-              Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-              screen and then come back to see your edits.
-            </Text>
-          </View>
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>See Your Changes</Text>
-            <Text style={styles.sectionDescription}>
+        <Body>
+          <SectionContainer>
+            <SectionTitle>Step One</SectionTitle>
+            <SectionDescription>
+              Edit <Highlight>App.tsx</Highlight> to change this screen and then
+              come back to see your edits.
+            </SectionDescription>
+          </SectionContainer>
+
+          <SectionContainer>
+            <SectionTitle>See Your Changes</SectionTitle>
+            <SectionDescription>
               <ReloadInstructions />
-            </Text>
-          </View>
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Debug</Text>
-            <Text style={styles.sectionDescription}>
+            </SectionDescription>
+          </SectionContainer>
+
+          <SectionContainer>
+            <SectionTitle>Debug</SectionTitle>
+            <SectionDescription>
               <DebugInstructions />
-            </Text>
-          </View>
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Learn More</Text>
-            <Text style={styles.sectionDescription}>
+            </SectionDescription>
+          </SectionContainer>
+
+          <SectionContainer>
+            <SectionTitle>Learn More</SectionTitle>
+            <SectionDescription>
               Read the docs to discover what to do next:
-            </Text>
-          </View>
+            </SectionDescription>
+          </SectionContainer>
+
           <LearnMoreLinks />
-        </View>
-      </ScrollView>
+        </Body>
+      </ScrollBody>
     </SafeAreaView>
   </>
 );
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+const ScrollBody = styled.ScrollView`
+  background-color: ${Colors.lighter};
+`;
+
+const Body = styled.View`
+  background-color: ${Colors.white};
+`;
+
+const SectionContainer = styled.View`
+  margin-top: 32;
+  padding-horizontal: 24;
+`;
+
+const SectionTitle = styled.Text`
+  font-size: 24;
+  font-weight: 600;
+  color: ${Colors.black};
+`;
+
+const SectionDescription = styled.Text`
+  margin-top: 8;
+  font-size: 18;
+  font-weight: 400;
+  color: ${Colors.dark};
+`;
+
+const Highlight = styled.Text`
+  font-weight: 700;
+`;
 
 export default App;
