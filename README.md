@@ -11,7 +11,7 @@ npm install
 Create a config file by copying local config example:
 
 ```sh
-cp config.local.json config.json
+cp config.template.android.json config.json
 ```
 
 You can edit the config file as suited:
