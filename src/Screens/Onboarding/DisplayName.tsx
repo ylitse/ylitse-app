@@ -35,6 +35,9 @@ const DisplayName = ({ navigation }: Props) => {
     });
   };
 
+  const isValidDisplayName =
+    displayName.length >= 2 && displayName.length <= 100;
+
   return (
     <OnboardingBackground testID="onboarding.displayName.view">
       <Card style={styles.card}>
@@ -50,11 +53,12 @@ const DisplayName = ({ navigation }: Props) => {
         />
         <Message style={styles.bodyText} id="onboarding.displayName.bodyText" />
         <Button
-          style={styles.nextButton}
+          style={isValidDisplayName ? styles.nextButton : styles.notValidButton}
           onPress={navigateToEmailScreen}
           messageId="onboarding.displayName.nextButton"
           badge={require('../images/arrow.svg')}
           testID="onboarding.displayName.nextButton"
+          disabled={!isValidDisplayName}
         />
         <Button
           messageId="onboarding.signUp.back"
@@ -87,6 +91,7 @@ const styles = RN.StyleSheet.create({
     marginBottom: 40,
   },
   nextButton: { marginBottom: 16 },
+  notValidButton: { marginBottom: 16, backgroundColor: colors.lightestGray },
 });
 
 export default DisplayName;
