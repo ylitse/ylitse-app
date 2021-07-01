@@ -7,6 +7,8 @@ import fonts from './fonts';
 import NamedInputField from './NamedInputField';
 import { textShadow } from './shadow';
 
+import { validateEmail } from '../../lib/validators';
+
 type Props = {
   email?: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
@@ -15,6 +17,8 @@ type Props = {
 };
 
 export default (props: Props) => {
+  const canContinue = props.email === '' ? true : validateEmail(props.email);
+
   return (
     <>
       <NamedInputField
@@ -38,6 +42,7 @@ export default (props: Props) => {
           onPress={props.onButtonPress}
           messageId="meta.save"
           testID="main.settings.account.email.save"
+          disabled={!canContinue}
         />
       </RN.View>
     </>

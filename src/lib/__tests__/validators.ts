@@ -17,3 +17,49 @@ describe('unixTimeFromDateString', () => {
     );
   });
 });
+
+describe('validateEmail', () => {
+  [
+    'plainaddress',
+    '#@%^%#$@#$@#.com',
+    '@example.com',
+    'Joe Smith <email@example.com>',
+    'email.example.com',
+    'email@example@example.com',
+    'あいうえお@example.com',
+    'email@example.com (Joe Smith)',
+    'email@example',
+    'email@111.222.333.44444',
+    '',
+    2,
+    null,
+    undefined,
+    'a',
+    `${'x'.repeat(400)}@example.org`,
+  ].forEach(invalidEmail => {
+    it(`returns false for invalid address ${invalidEmail}`, () => {
+      expect(validators.validateEmail(invalidEmail)).toEqual(false);
+    });
+  });
+
+  [
+    'email@example.com',
+    'firstname.lastname@example.com',
+    'email@subdomain.example.com',
+    'firstname+lastname@example.com',
+    '1234567890@example.com',
+    'email@example-one.com',
+    '_______@example.com',
+    'email@example.name',
+    'email@example.museum',
+    'email@example.co.jp',
+    'firstname-lastname@example.com',
+    "!#$%&'*+-/=?^_`.{|}~@kebab.fi",
+
+    `${'x'.repeat(63)}@${'e'.repeat(191)}.${'f'.repeat(62)}`,
+  ].forEach(validEmail => {
+    it(`returns true for valid address ${validEmail}`, () => {
+      expect(validators.validateEmail(validEmail)).toEqual(true);
+    });
+  });
+});

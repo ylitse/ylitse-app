@@ -3,6 +3,7 @@ import RN from 'react-native';
 
 import * as accountApi from '../../api/account';
 import * as navigationProps from '../../lib/navigation-props';
+import { validateEmail } from '../../lib/validators';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -38,6 +39,8 @@ const Email = ({ navigation }: Props) => {
     });
   };
 
+  const canContinue = email === '' ? true : validateEmail(email);
+
   return (
     <OnboardingBackground testID="onboarding.email.view">
       <Card style={styles.card}>
@@ -58,6 +61,7 @@ const Email = ({ navigation }: Props) => {
           messageId="onboarding.email.nextButton"
           badge={require('../images/arrow.svg')}
           testID="onboarding.email.nextButton"
+          disabled={!canContinue}
         />
         <Button
           messageId="onboarding.signUp.back"
