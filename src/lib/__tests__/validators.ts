@@ -31,9 +31,6 @@ describe('validateEmail', () => {
     'email@example',
     'email@111.222.333.44444',
     '',
-    2,
-    null,
-    undefined,
     'a',
     `${'x'.repeat(400)}@example.org`,
   ].forEach(invalidEmail => {

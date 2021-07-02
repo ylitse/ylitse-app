@@ -39,7 +39,7 @@ const Email = ({ navigation }: Props) => {
     });
   };
 
-  const canContinue = email === '' ? true : validateEmail(email);
+  const isValidEmail = email === '' ? true : validateEmail(email);
 
   return (
     <OnboardingBackground testID="onboarding.email.view">
@@ -61,7 +61,7 @@ const Email = ({ navigation }: Props) => {
           messageId="onboarding.email.nextButton"
           badge={require('../images/arrow.svg')}
           testID="onboarding.email.nextButton"
-          disabled={!canContinue}
+          disabled={!isValidEmail}
         />
         <Button
           messageId="onboarding.signUp.back"

@@ -10,14 +10,14 @@ import { textShadow } from './shadow';
 import { validateEmail } from '../../lib/validators';
 
 type Props = {
-  email?: string;
+  email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
   onGoBack: () => void;
   onButtonPress: () => void;
 };
 
 export default (props: Props) => {
-  const canContinue = props.email === '' ? true : validateEmail(props.email);
+  const isValidEmail = props.email === '' ? true : validateEmail(props.email);
 
   return (
     <>
@@ -42,7 +42,7 @@ export default (props: Props) => {
           onPress={props.onButtonPress}
           messageId="meta.save"
           testID="main.settings.account.email.save"
-          disabled={!canContinue}
+          disabled={!isValidEmail}
         />
       </RN.View>
     </>
