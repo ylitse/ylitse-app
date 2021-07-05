@@ -1,7 +1,5 @@
 import * as automaton from 'redux-automaton';
 import * as remoteData from '@devexperts/remote-data-ts';
-import * as T from 'fp-ts/lib/Task';
-import { pipe } from 'fp-ts/lib/pipeable';
 
 import * as authApi from '../../api/auth';
 
@@ -9,9 +7,9 @@ import * as actions from '../actions';
 
 import { AppState } from '../types';
 import { withToken } from './accessToken';
-import { cmd } from '../middleware';
 
 export const changePassword = actions.make('changePassword/start');
+export const reset = actions.make('changePassword/reset')(undefined);
 export const initialState = remoteData.initial;
 export const coolDownDuration = 5000;
 
@@ -32,23 +30,17 @@ export const reducer: automaton.Reducer<
           actions.make('changePassword/completed'),
         ),
       );
+
     case 'changePassword/completed':
-      return automaton.loop(
-        remoteData.fromEither(action.payload),
-        cmd(
-          pipe(
-            T.of(undefined),
-            T.map(actions.make('changePassword/reset')),
-            T.delay(coolDownDuration),
-          ),
-        ),
-      );
+      return remoteData.fromEither(action.payload);
+
     case 'changePassword/reset':
       if (remoteData.isPending(state)) {
         return state;
       }
 
       return remoteData.initial;
+
     default:
       return state;
   }

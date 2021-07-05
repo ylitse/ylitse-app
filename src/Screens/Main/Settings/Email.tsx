@@ -22,6 +22,7 @@ import Spinner from '../../components/Spinner';
 import { MentorListRoute } from '../../Onboarding/MentorList';
 
 import AlertBox from './UserAccount/AlertBox';
+import AlertDialog from './UserAccount/AlertDialog';
 import EmailForm from 'src/Screens/components/EmailForm';
 
 export type EmailChangeRoute = {
@@ -43,12 +44,25 @@ export default ({ navigation }: Props) => {
   const onButtonPress = () => {
     dispatch(changeEmailState.changeEmail({ email, account: account }));
   };
+
+  const tryAgain = () => {
+    dispatch(changeEmailState.resetChangeEmail);
+    dispatch(changeEmailState.changeEmail({ email, account: account }));
+  };
+
   const requestState = useSelector(changeEmailState.select);
+
+  const resetAndGoBack = () => {
+    dispatch(changeEmailState.resetChangeEmail);
+    onGoBack();
+  };
 
   React.useEffect(() => {
     if (RD.isSuccess(requestState)) {
-      setEmail(requestState.value.email ?? '');
-      const timeout = setTimeout(onGoBack, changeEmailState.coolDownDuration);
+      const timeout = setTimeout(
+        resetAndGoBack,
+        changeEmailState.coolDownDuration,
+      );
 
       return () => clearTimeout(timeout);
     }
@@ -89,11 +103,11 @@ export default ({ navigation }: Props) => {
               ),
               () => <Spinner style={styles.spinner} />,
               () => (
-                <AlertBox
+                <AlertDialog
                   imageStyle={styles.failBox}
                   imageSource={require('../../images/alert-circle.svg')}
-                  duration={changeEmailState.coolDownDuration}
                   messageId="main.settings.account.email.fail"
+                  onPress={tryAgain}
                 />
               ),
               () => (

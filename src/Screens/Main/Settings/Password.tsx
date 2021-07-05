@@ -21,6 +21,7 @@ import Spinner from '../../components/Spinner';
 import { MentorListRoute } from '../../Onboarding/MentorList';
 
 import AlertBox from './UserAccount/AlertBox';
+import AlertDialog from './UserAccount/AlertDialog';
 import PasswordForm from 'src/Screens/components/PasswordForm';
 
 export type PasswordChangeRoute = {
@@ -46,21 +47,29 @@ export default ({ navigation }: Props) => {
     repeatedNewPassword.length > 0 &&
     newPassword === repeatedNewPassword;
 
+  const onButtonPress = () => {
+    dispatch(state.changePassword({ currentPassword, newPassword }));
+  };
+
   const onGoBack = () => {
     navigation.goBack();
   };
 
-  const onButtonPress = () => {
+  const resetAndGoBack = () => {
+    dispatch(state.reset);
+    onGoBack();
+  };
+
+  const tryAgain = () => {
+    dispatch(state.reset);
     dispatch(state.changePassword({ currentPassword, newPassword }));
   };
+
   const requestState = useSelector(state.select);
 
   React.useEffect(() => {
     if (RD.isSuccess(requestState)) {
-      setCurrentPassword('');
-      setNewPassword('');
-      setRepeatedNewPassword('');
-      const timeout = setTimeout(onGoBack, state.coolDownDuration);
+      const timeout = setTimeout(resetAndGoBack, state.coolDownDuration);
 
       return () => clearTimeout(timeout);
     }
@@ -109,11 +118,11 @@ export default ({ navigation }: Props) => {
               ),
               () => <Spinner style={styles.spinner} />,
               () => (
-                <AlertBox
+                <AlertDialog
                   imageStyle={styles.failBox}
                   imageSource={require('../../images/alert-circle.svg')}
-                  duration={state.coolDownDuration}
                   messageId="main.settings.account.password.failure"
+                  onPress={tryAgain}
                 />
               ),
               () => (
