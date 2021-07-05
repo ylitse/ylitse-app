@@ -54,8 +54,8 @@ const banRequest = (
   accessToken: authApi.AccessToken,
   status: BanActions,
 ) => {
-  
   var statusStr = 'ok';
+
   if (status === 'Ban') {
     statusStr = 'banned';
   } else if (status === 'Delete') {

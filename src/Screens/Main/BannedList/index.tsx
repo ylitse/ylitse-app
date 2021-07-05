@@ -25,10 +25,7 @@ export type BannedListRoute = {
   'Main/BannedList': {};
 };
 
-type Props = navigationProps.NavigationProps<
-  BannedListRoute,
-  ChatRoute
->;
+type Props = navigationProps.NavigationProps<BannedListRoute, ChatRoute>;
 
 export default ({ navigation }: Props) => {
   const remoteBuddies = ReactRedux.useSelector(buddyState.getBannedBuddies);
@@ -37,7 +34,7 @@ export default ({ navigation }: Props) => {
 
   const [dialogState, setDialogState] = React.useState<DialogState>({
     dropdownOpen: false,
-    dialogOpen: false
+    dialogOpen: false,
   });
 
   const [{ height }, onLayout] = useLayout();
@@ -66,20 +63,19 @@ export default ({ navigation }: Props) => {
         setBanStatus(buddy.buddyId, 'Delete');
       }
     }
-  }
+  };
 
-  const dialogProperties: Omit<DialogProps, 'onPressCancel' | 'buttonId'> =
-    {
-      textId: 'main.chat.deleteAll.confirmation',
-      onPress: () => handleDeleteAll(),
-      type: 'warning',
-    }
+  const dialogProperties: Omit<DialogProps, 'onPressCancel' | 'buttonId'> = {
+    textId: 'main.chat.deleteAll.confirmation',
+    onPress: () => handleDeleteAll(),
+    type: 'warning',
+  };
 
   const dropdownItems: DropDownItem[] = [
-    { 
+    {
       textId: 'main.chat.deleteAll',
       onPress: () => setDialogs('dialogOpen', true),
-    }
+    },
   ];
 
   const setDialogs = (key: keyof DialogState, show: boolean) => {
@@ -93,7 +89,11 @@ export default ({ navigation }: Props) => {
       onPress={() => setDialogs('dropdownOpen', false)}
       disabled={!dialogState.dropdownOpen}
     >
-      <Title openDropdown={() => setDialogs('dropdownOpen', true)} onLayout={onLayout} onPressBack={onPressBack} />
+      <Title
+        openDropdown={() => setDialogs('dropdownOpen', true)}
+        onLayout={onLayout}
+        onPressBack={onPressBack}
+      />
       {dialogState.dropdownOpen && (
         <DropDown
           style={[styles.dropdown, { top: height - 8 }]}

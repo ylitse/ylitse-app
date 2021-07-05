@@ -36,13 +36,15 @@ export const messages = {
 
   'main.chat.ban': 'Estä keskustelu',
   'main.chat.ban.confirmation': 'Haluatko varmasti estää tämän keskustelun?',
+  'main.chat.delete': 'Poista keskustelu',
+  'main.chat.delete.confirmation':
+    'Haluatko varmasti poistaa tämän keskustelun? Tätä toimintoa ei voi kumota.',
+  'main.chat.deleteAll': 'Poista kaikki estetyt keskustelut',
+  'main.chat.deleteAll.confirmation':
+    'Haluatko varmasti poistaa kaikki estetyt keskustelut? Tätä toimintoa ei voi kumota.',
   'main.chat.navigation.banned': 'Estetyt',
   'main.chat.unban': 'Palauta keskustelu',
   'main.chat.unban.confirmation': 'Haluatko palauttaa tämän keskustelun?',
-  'main.chat.delete': 'Poista keskustelu',
-  'main.chat.delete.confirmation': 'Haluatko varmasti poistaa tämän keskustelun? Tätä toimintoa ei voi kumota.',
-  'main.chat.deleteAll': 'Poista kaikki estetyt keskustelut',
-  'main.chat.deleteAll.confirmation': 'Haluatko varmasti poistaa kaikki estetyt keskustelut? Tätä toimintoa ei voi kumota.',
 
   'main.mentor.other': 'Pystyn auttamaan näissä:',
   'main.mentor.story': 'Tarinani',

@@ -64,7 +64,7 @@ const Chat = ({ navigation }: Props) => {
 
   const dialogProperties: Omit<DialogProps, 'onPressCancel' | 'buttonId'> =
     isBanned
-      ? deleteOption 
+      ? deleteOption
         ? {
             textId: 'main.chat.delete.confirmation',
             onPress: () => handleBan('Delete'),
@@ -73,35 +73,39 @@ const Chat = ({ navigation }: Props) => {
         : {
             textId: 'main.chat.unban.confirmation',
             onPress: () => handleBan('Unban'),
-          } 
+          }
       : {
           textId: 'main.chat.ban.confirmation',
           onPress: () => handleBan('Ban'),
           type: 'warning',
         };
 
-  const dropdownItems: DropDownItem[] = 
-    isBanned ? [{
-      textId: 'main.chat.unban',
-      onPress: () => {
-        setDeleteOption(false);
-        setDialogs('dialogOpen', true);
-      }
-    },
-    {
-      textId: 'main.chat.delete',
-      onPress: () => {
-        setDeleteOption(true);
-        setDialogs('dialogOpen', true);
-      }
-    }] 
-  : [{ 
-      textId: 'main.chat.ban',
-      onPress: () => {
-        setDeleteOption(false);
-        setDialogs('dialogOpen', true);
-      }
-    }];
+  const dropdownItems: DropDownItem[] = isBanned
+    ? [
+        {
+          textId: 'main.chat.unban',
+          onPress: () => {
+            setDeleteOption(false);
+            setDialogs('dialogOpen', true);
+          },
+        },
+        {
+          textId: 'main.chat.delete',
+          onPress: () => {
+            setDeleteOption(true);
+            setDialogs('dialogOpen', true);
+          },
+        },
+      ]
+    : [
+        {
+          textId: 'main.chat.ban',
+          onPress: () => {
+            setDeleteOption(false);
+            setDialogs('dialogOpen', true);
+          },
+        },
+      ];
 
   const setDialogs = (key: keyof DialogState, show: boolean) => {
     setDialogState({ ...dialogState, [key]: show });

@@ -7,8 +7,8 @@ import { textShadow } from '../../components/shadow';
 import Message from '../../components/Message';
 
 export type BannedListRoute = {
-    'Main/BannedList': {};
-  };
+  'Main/BannedList': {};
+};
 
 type Props = {
   openDropdown: () => void | undefined;
@@ -16,7 +16,11 @@ type Props = {
   onPressBack: () => void | undefined;
 };
 
-export const Title: React.FC<Props> = ({ openDropdown, onLayout, onPressBack }) => {
+export const Title: React.FC<Props> = ({
+  openDropdown,
+  onLayout,
+  onPressBack,
+}) => {
   return (
     <RN.SafeAreaView style={[styles.shadow]} onLayout={onLayout}>
       <RN.TouchableOpacity
@@ -28,7 +32,10 @@ export const Title: React.FC<Props> = ({ openDropdown, onLayout, onPressBack }) 
           style={styles.backButtonIcon}
         />
       </RN.TouchableOpacity>
-      <Message id="main.chat.navigation.banned" style={styles.screenTitleText} />
+      <Message
+        id="main.chat.navigation.banned"
+        style={styles.screenTitleText}
+      />
       <RN.TouchableHighlight
         style={styles.kebabIconHighlight}
         underlayColor={colors.faintBackground}
@@ -77,7 +84,7 @@ const styles = RN.StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  kebabIcon: { 
-    tintColor: colors.white 
+  kebabIcon: {
+    tintColor: colors.white,
   },
 });
