@@ -8,7 +8,7 @@ import NamedInputField from './NamedInputField';
 import { textShadow } from './shadow';
 
 import { validateEmail } from '../../lib/validators';
-
+import Message from "../components/Message"
 type Props = {
   email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
@@ -19,6 +19,7 @@ type Props = {
 export default (props: Props) => {
   const isValidEmail = props.email === '' ? true : validateEmail(props.email);
 
+
   return (
     <>
       <NamedInputField
@@ -28,6 +29,9 @@ export default (props: Props) => {
         onChangeText={props.setEmail}
         testID="main.settings.account.email.input"
       />
+      {isValidEmail ? null : (<Message style={styles.text}
+        id="main.settings.account.email.invalid" />)}
+
       <RN.View style={styles.buttonContainer}>
         <Button
           style={styles.cancelButton}
@@ -50,6 +54,10 @@ export default (props: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
+  text: {
+    color: colors.red,
+    textAlign: "center",
+  },
   field: {
     marginVertical: 8,
   },

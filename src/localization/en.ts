@@ -64,6 +64,7 @@ export const messages: { [key in MessageId]: string } = {
   'main.settings.account.email.missing': 'no email',
   'main.settings.account.email.success': 'Changing email succeeded!',
   'main.settings.account.email.title': 'Email',
+  'main.settings.account.email.invalid': 'Invalid email address',
 
   'main.settings.account.password.button': 'Change password',
   'main.settings.account.password.current': 'Current password',
