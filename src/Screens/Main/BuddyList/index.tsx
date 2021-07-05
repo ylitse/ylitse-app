@@ -14,7 +14,7 @@ import Button from './Button';
 
 import { ChatRoute } from '../Chat';
 import DropDown, { DropDownItem } from '../../components/DropDownMenu';
-import { BannedListRoute } from './BannedList';
+import { BannedListRoute } from '../BannedList';
 import { Title } from './Title';
 
 export type BuddyListRoute = {
@@ -38,7 +38,7 @@ export default ({ navigation }: Props) => {
   };
 
   const navigateToBanned = () => {
-    navigation.navigate('Main/BuddyList/BannedList', {});
+    navigation.navigate('Main/BannedList', {});
     setDropdownOpen(false);
   };
 

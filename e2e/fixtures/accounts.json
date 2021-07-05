@@ -6,6 +6,13 @@
             "password": "menteementee",
             "email": "mentee@mentee.mentee",
             "role": "mentee"
+        },
+        {
+            "loginName": "mentee1",
+            "displayName": "mentee1_nick",
+            "password": "menteementee",
+            "email": "mentee1@mentee.mentee",
+            "role": "mentee"
         }
     ],
     "mentors": [

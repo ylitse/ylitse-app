@@ -17,8 +17,8 @@ const buddyType = t.intersection([
   t.partial({ status: t.literal('banned') }),
 ]);
 
-export type BanActions = 'Ban' | 'Unban';
-export type BanStatuses = 'Banned' | 'NotBanned';
+export type BanActions = 'Ban' | 'Unban' | 'Delete';
+export type BanStatuses = 'Banned' | 'NotBanned' | 'Deleted';
 
 export type Buddy = {
   buddyId: string;
@@ -54,15 +54,31 @@ const banRequest = (
   accessToken: authApi.AccessToken,
   status: BanActions,
 ) => {
-  const statusStr = status === 'Ban' ? 'banned' : 'ok';
+  
+  var statusStr = 'ok';
+  if (status === 'Ban') {
+    statusStr = 'banned';
+  } else if (status === 'Delete') {
+    statusStr = 'deleted';
+  }
 
-  return http.put(
-    `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
-    { status: statusStr },
-    {
-      headers: authApi.authHeader(accessToken),
-    },
-  );
+  if (statusStr === 'deleted') {
+    return http.destroy(
+      `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
+      { status: statusStr },
+      {
+        headers: authApi.authHeader(accessToken),
+      },
+    );
+  } else {
+    return http.put(
+      `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
+      { status: statusStr },
+      {
+        headers: authApi.authHeader(accessToken),
+      },
+    );
+  }
 };
 
 export function banBuddy(

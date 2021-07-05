@@ -41,6 +41,10 @@ export const messages: { [key in MessageId]: string } = {
   'main.chat.navigation.banned': 'Banned',
   'main.chat.unban': 'Restore chat',
   'main.chat.unban.confirmation': 'Are you sure you want to restore this user?',
+  'main.chat.delete': 'Delete chat',
+  'main.chat.delete.confirmation': 'Are you sure you want to delete this chat? This action cannot be undone.',
+  'main.chat.deleteAll': 'Delete all banned chats',
+  'main.chat.deleteAll.confirmation': 'Are you sure you want to delete all banned chats? This action cannot be undone.',
 
   'main.mentor.other': 'I can also support with:',
   'main.mentor.story': 'My story',

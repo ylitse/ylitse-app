@@ -40,6 +40,13 @@ export const put = (url: string, body: any, options?: RequestInit) =>
     ...(options || {}),
   });
 
+export const destroy = (url: string, body: any, options?: RequestInit) =>
+  request(url, {
+    body: JSON.stringify(body),
+    method: 'DELETE',
+    ...(options || {}),
+  });
+
 const getJson = (response: Response) =>
   pipe(
     TE.tryCatch(
