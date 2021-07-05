@@ -14,8 +14,10 @@ export const unixTimeFromDateString = new t.Type<number, string, unknown>(
   a => new Date(a).toISOString(),
 );
 
-export const validateEmail = (value: string) => {
-  if (value.length > 320) {
+const isValidEmail = (value: string): boolean => {
+  if (value === '') {
+    return true;
+  } else if (value.length > 320) {
     return false;
   }
 
@@ -23,3 +25,13 @@ export const validateEmail = (value: string) => {
     value,
   );
 };
+
+export const ValidEmail = new t.Type<string, string, unknown>(
+  'ValidEmail',
+  (input: unknown): input is string => typeof input === 'string',
+  (input, context) =>
+    typeof input === 'string' && isValidEmail(input)
+      ? t.success(input)
+      : t.failure(input, context),
+  t.identity,
+);

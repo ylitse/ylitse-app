@@ -1,14 +1,18 @@
 import React from 'react';
 import RN from 'react-native';
 
+import { isRight } from 'fp-ts/lib/Either';
+
+import { ValidEmail } from '../../lib/validators';
+
 import Button from './Button';
 import colors from './colors';
 import fonts from './fonts';
 import NamedInputField from './NamedInputField';
 import { textShadow } from './shadow';
 
-import { validateEmail } from '../../lib/validators';
-import Message from "../components/Message"
+import Message from '../components/Message';
+
 type Props = {
   email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
@@ -17,8 +21,8 @@ type Props = {
 };
 
 export default (props: Props) => {
-  const isValidEmail = props.email === '' ? true : validateEmail(props.email);
-
+  const emailParsingResult = ValidEmail.decode(props.email);
+  const isValidEmail = isRight(emailParsingResult);
 
   return (
     <>
@@ -29,8 +33,9 @@ export default (props: Props) => {
         onChangeText={props.setEmail}
         testID="main.settings.account.email.input"
       />
-      {isValidEmail ? null : (<Message style={styles.text}
-        id="main.settings.account.email.invalid" />)}
+      {isValidEmail ? null : (
+        <Message style={styles.text} id="main.settings.account.email.invalid" />
+      )}
 
       <RN.View style={styles.buttonContainer}>
         <Button
@@ -56,7 +61,7 @@ export default (props: Props) => {
 const styles = RN.StyleSheet.create({
   text: {
     color: colors.red,
-    textAlign: "center",
+    textAlign: 'center',
   },
   field: {
     marginVertical: 8,

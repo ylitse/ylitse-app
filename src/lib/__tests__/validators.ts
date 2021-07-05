@@ -1,4 +1,4 @@
-import { right, left } from 'fp-ts/lib/Either';
+import { right, left, isRight, isLeft } from 'fp-ts/lib/Either';
 
 import * as validators from '../validators';
 
@@ -30,16 +30,16 @@ describe('validateEmail', () => {
     'email@example.com (Joe Smith)',
     'email@example',
     'email@111.222.333.44444',
-    '',
     'a',
     `${'x'.repeat(400)}@example.org`,
   ].forEach(invalidEmail => {
-    it(`returns false for invalid address ${invalidEmail}`, () => {
-      expect(validators.validateEmail(invalidEmail)).toEqual(false);
+    it(`fails to decode invalid address ${invalidEmail}`, () => {
+      expect(isLeft(validators.ValidEmail.decode(invalidEmail))).toEqual(true);
     });
   });
 
   [
+    '',
     'email@example.com',
     'firstname.lastname@example.com',
     'email@subdomain.example.com',
@@ -52,11 +52,10 @@ describe('validateEmail', () => {
     'email@example.co.jp',
     'firstname-lastname@example.com',
     "!#$%&'*+-/=?^_`.{|}~@kebab.fi",
-
     `${'x'.repeat(63)}@${'e'.repeat(191)}.${'f'.repeat(62)}`,
   ].forEach(validEmail => {
-    it(`returns true for valid address ${validEmail}`, () => {
-      expect(validators.validateEmail(validEmail)).toEqual(true);
+    it(`decodes valid email address ${validEmail}`, () => {
+      expect(isRight(validators.ValidEmail.decode(validEmail))).toEqual(true);
     });
   });
 });

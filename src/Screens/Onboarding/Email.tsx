@@ -1,9 +1,11 @@
 import React from 'react';
 import RN from 'react-native';
 
+import { isRight } from 'fp-ts/lib/Either';
+
 import * as accountApi from '../../api/account';
 import * as navigationProps from '../../lib/navigation-props';
-import { validateEmail } from '../../lib/validators';
+import { ValidEmail } from '../../lib/validators';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -39,7 +41,8 @@ const Email = ({ navigation }: Props) => {
     });
   };
 
-  const isValidEmail = email === '' ? true : validateEmail(email);
+  const emailParsingResult = ValidEmail.decode(email);
+  const isValidEmail = isRight(emailParsingResult);
 
   return (
     <OnboardingBackground testID="onboarding.email.view">
