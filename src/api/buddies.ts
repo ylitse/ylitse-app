@@ -19,6 +19,7 @@ const buddyType = t.intersection([
 
 export type BanActions = 'Ban' | 'Unban' | 'Delete';
 export type BanStatuses = 'Banned' | 'NotBanned' | 'Deleted';
+export type BanStatusStrings = 'banned' | 'ok' | 'deleted';
 
 export type Buddy = {
   buddyId: string;
@@ -54,7 +55,7 @@ const banRequest = (
   accessToken: authApi.AccessToken,
   status: BanActions,
 ) => {
-  var statusStr = 'ok';
+  let statusStr: BanStatusStrings = 'ok';
 
   if (status === 'Ban') {
     statusStr = 'banned';
