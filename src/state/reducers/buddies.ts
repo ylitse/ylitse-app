@@ -83,6 +83,14 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             ),
         ),
       );
+    case 'buddies/delete/start':
+      return automaton.loop(
+        RD.pending,
+        withToken(
+          buddyApi.deleteBuddies(action.payload.buddyIds),
+          actions.make('buddies/changeStatus/end'),
+        ),
+      );
     default:
       return state;
   }

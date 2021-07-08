@@ -67,6 +67,7 @@ type RegularActions = {
     banStatus: 'Ban' | 'Unban' | 'Delete';
   };
   'buddies/changeStatus/end': E.Either<string, buddyApi.Buddy>;
+  'buddies/delete/start': { buddyIds: string[] };
 
   'newMessage/send/start': messageApi.SendMessageParams;
   'newMessage/send/end': {

@@ -39,10 +39,8 @@ export const put = (url: string, body: any, options?: RequestInit) =>
     method: 'PUT',
     ...(options || {}),
   });
-
-export const destroy = (url: string, body: any, options?: RequestInit) =>
+export const destroy = (url: string, options?: RequestInit) =>
   request(url, {
-    body: JSON.stringify(body),
     method: 'DELETE',
     ...(options || {}),
   });

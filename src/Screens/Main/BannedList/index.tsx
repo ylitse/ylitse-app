@@ -19,7 +19,6 @@ import { Title } from './Title';
 
 import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
-import { BanActions } from 'src/api/buddies';
 
 export type BannedListRoute = {
   'Main/BannedList': {};
@@ -49,19 +48,14 @@ export default ({ navigation }: Props) => {
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
-  const setBanStatus = (buddyId: string, banStatus: BanActions) => {
-    dispatch({
-      type: 'buddies/changeBanStatus/start',
-      payload: { buddyId, banStatus },
-    });
-  };
-
   const handleDeleteAll = () => {
     if (RD.isSuccess(remoteBuddies)) {
       setDialogState({ dropdownOpen: false, dialogOpen: false });
-      for (var buddy of remoteBuddies.value) {
-        setBanStatus(buddy.buddyId, 'Delete');
-      }
+      const buddyIds = remoteBuddies.value.map(buddy => buddy.buddyId);
+      dispatch({
+        type: 'buddies/delete/start',
+        payload: { buddyIds },
+      });
     }
   };
 

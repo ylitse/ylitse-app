@@ -55,31 +55,15 @@ const banRequest = (
   accessToken: authApi.AccessToken,
   status: BanActions,
 ) => {
-  let statusStr: BanStatusStrings = 'ok';
+  const statusStr: BanStatusStrings = status === 'Ban' ? 'banned' : 'ok';
 
-  if (status === 'Ban') {
-    statusStr = 'banned';
-  } else if (status === 'Delete') {
-    statusStr = 'deleted';
-  }
-
-  if (statusStr === 'deleted') {
-    return http.destroy(
-      `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
-      { status: statusStr },
-      {
-        headers: authApi.authHeader(accessToken),
-      },
-    );
-  } else {
-    return http.put(
-      `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
-      { status: statusStr },
-      {
-        headers: authApi.authHeader(accessToken),
-      },
-    );
-  }
+  return http.put(
+    `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
+    { status: statusStr },
+    {
+      headers: authApi.authHeader(accessToken),
+    },
+  );
 };
 
 export function banBuddy(
@@ -89,6 +73,32 @@ export function banBuddy(
   return accessToken =>
     http.validateResponse(
       banRequest(buddyId, accessToken, banStatus),
+      buddyType,
+      toBuddy,
+    );
+}
+
+const deleteRequest = (
+  buddyIds: string[],
+  accessToken: authApi.AccessToken,
+) => {
+  const buddyString = buddyIds.join(',');
+  const params = `?contact_user_ids=${buddyString}`;
+
+  return http.destroy(
+    `${config.baseUrl}/users/${accessToken.userId}/contacts${params}`,
+    {
+      headers: authApi.authHeader(accessToken),
+    },
+  );
+};
+
+export function deleteBuddies(
+  buddyIds: string[],
+): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddy> {
+  return accessToken =>
+    http.validateResponse(
+      deleteRequest(buddyIds, accessToken),
       buddyType,
       toBuddy,
     );
