@@ -39,7 +39,7 @@ export const messages = {
   'main.chat.delete': 'Poista keskustelu',
   'main.chat.delete.confirmation':
     'Haluatko varmasti poistaa tämän keskustelun? Tätä toimintoa ei voi kumota.',
-  'main.chat.deleteAll': 'Poista kaikki estetyt keskustelut',
+  'main.chat.deleteAll': 'Poista kaikki',
   'main.chat.deleteAll.confirmation':
     'Haluatko varmasti poistaa kaikki estetyt keskustelut? Tätä toimintoa ei voi kumota.',
   'main.chat.navigation.banned': 'Estetyt',

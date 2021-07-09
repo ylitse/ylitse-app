@@ -235,7 +235,7 @@ describe('Filter chats', () => {
     await element(by.text('Banned')).tap();
 
     await element(by.id('main.bannedlist.kebabicon')).tap();
-    await element(by.text('Delete all banned chats')).tap();
+    await element(by.text('Delete all')).tap();
 
     await element(by.text('OK')).tap();
 
