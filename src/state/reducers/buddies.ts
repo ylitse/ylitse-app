@@ -65,11 +65,11 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         state,
         withToken(
           buddyApi.banBuddy(action.payload.buddyId, action.payload.banStatus),
-          actions.make('buddies/changeStatus/end'),
+          actions.make('buddies/changeBanStatus/end'),
         ),
       );
 
-    case 'buddies/changeStatus/end':
+    case 'buddies/changeBanStatus/end':
       return pipe(
         action.payload,
         E.fold(
