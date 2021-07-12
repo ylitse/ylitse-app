@@ -1,8 +1,11 @@
 import React from 'react';
 import RN from 'react-native';
 
+import { isRight } from 'fp-ts/lib/Either';
+
 import * as accountApi from '../../api/account';
 import * as navigationProps from '../../lib/navigation-props';
+import { ValidEmail } from '../../lib/validators';
 
 import OnboardingBackground from '../components/OnboardingBackground';
 import Card from '../components/Card';
@@ -38,6 +41,9 @@ const Email = ({ navigation }: Props) => {
     });
   };
 
+  const emailParsingResult = ValidEmail.decode(email);
+  const isValidEmail = isRight(emailParsingResult);
+
   return (
     <OnboardingBackground testID="onboarding.email.view">
       <Card style={styles.card}>
@@ -58,6 +64,7 @@ const Email = ({ navigation }: Props) => {
           messageId="onboarding.email.nextButton"
           badge={require('../images/arrow.svg')}
           testID="onboarding.email.nextButton"
+          disabled={!isValidEmail}
         />
         <Button
           messageId="onboarding.signUp.back"

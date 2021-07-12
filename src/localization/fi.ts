@@ -59,6 +59,7 @@ export const messages = {
   'main.settings.account.email.change': 'Muuta sähköposti',
   'main.settings.account.email.fail': 'Sähköpostin muutos epäonnistui!',
   'main.settings.account.email.fieldTitle': 'Sähköposti',
+  'main.settings.account.email.invalid': 'Virheellinen sähköpostiosoite',
   'main.settings.account.email.missing': 'ei sähköpostia',
   'main.settings.account.email.success': 'Sähköpostin muutos onnistui!',
   'main.settings.account.email.title': 'Sähköposti',

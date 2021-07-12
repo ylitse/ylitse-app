@@ -1,20 +1,29 @@
 import React from 'react';
 import RN from 'react-native';
 
+import { isRight } from 'fp-ts/lib/Either';
+
+import { ValidEmail } from '../../lib/validators';
+
 import Button from './Button';
 import colors from './colors';
 import fonts from './fonts';
 import NamedInputField from './NamedInputField';
 import { textShadow } from './shadow';
 
+import Message from '../components/Message';
+
 type Props = {
-  email?: string;
+  email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
   onGoBack: () => void;
   onButtonPress: () => void;
 };
 
 export default (props: Props) => {
+  const emailParsingResult = ValidEmail.decode(props.email);
+  const isValidEmail = isRight(emailParsingResult);
+
   return (
     <>
       <NamedInputField
@@ -24,6 +33,10 @@ export default (props: Props) => {
         onChangeText={props.setEmail}
         testID="main.settings.account.email.input"
       />
+      {isValidEmail ? null : (
+        <Message style={styles.text} id="main.settings.account.email.invalid" />
+      )}
+
       <RN.View style={styles.buttonContainer}>
         <Button
           style={styles.cancelButton}
@@ -38,6 +51,7 @@ export default (props: Props) => {
           onPress={props.onButtonPress}
           messageId="meta.save"
           testID="main.settings.account.email.save"
+          disabled={!isValidEmail}
         />
       </RN.View>
     </>
@@ -45,6 +59,10 @@ export default (props: Props) => {
 };
 
 const styles = RN.StyleSheet.create({
+  text: {
+    color: colors.red,
+    textAlign: 'center',
+  },
   field: {
     marginVertical: 8,
   },

@@ -13,3 +13,25 @@ export const unixTimeFromDateString = new t.Type<number, string, unknown>(
     }),
   a => new Date(a).toISOString(),
 );
+
+const isValidEmail = (value: string): boolean => {
+  if (value === '') {
+    return true;
+  } else if (value.length > 320) {
+    return false;
+  }
+
+  return /^[a-zA-Z0-9!#$%&'*+\-/=?^_`.{|}~]{1,64}@[a-z0-9.-]+\.[a-z]{2,64}$/.test(
+    value,
+  );
+};
+
+export const ValidEmail = new t.Type<string, string, unknown>(
+  'ValidEmail',
+  (input: unknown): input is string => typeof input === 'string',
+  (input, context) =>
+    typeof input === 'string' && isValidEmail(input)
+      ? t.success(input)
+      : t.failure(input, context),
+  t.identity,
+);

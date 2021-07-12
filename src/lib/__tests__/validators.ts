@@ -1,4 +1,4 @@
-import { right, left } from 'fp-ts/lib/Either';
+import { right, left, isRight, isLeft } from 'fp-ts/lib/Either';
 
 import * as validators from '../validators';
 
@@ -15,5 +15,47 @@ describe('unixTimeFromDateString', () => {
     expect(validators.unixTimeFromDateString.decode('foo')).toEqual(
       left(expect.any(Array)),
     );
+  });
+});
+
+describe('validateEmail', () => {
+  [
+    'plainaddress',
+    '#@%^%#$@#$@#.com',
+    '@example.com',
+    'Joe Smith <email@example.com>',
+    'email.example.com',
+    'email@example@example.com',
+    'あいうえお@example.com',
+    'email@example.com (Joe Smith)',
+    'email@example',
+    'email@111.222.333.44444',
+    'a',
+    `${'x'.repeat(400)}@example.org`,
+  ].forEach(invalidEmail => {
+    it(`fails to decode invalid address ${invalidEmail}`, () => {
+      expect(isLeft(validators.ValidEmail.decode(invalidEmail))).toEqual(true);
+    });
+  });
+
+  [
+    '',
+    'email@example.com',
+    'firstname.lastname@example.com',
+    'email@subdomain.example.com',
+    'firstname+lastname@example.com',
+    '1234567890@example.com',
+    'email@example-one.com',
+    '_______@example.com',
+    'email@example.name',
+    'email@example.museum',
+    'email@example.co.jp',
+    'firstname-lastname@example.com',
+    "!#$%&'*+-/=?^_`.{|}~@kebab.fi",
+    `${'x'.repeat(63)}@${'e'.repeat(191)}.${'f'.repeat(62)}`,
+  ].forEach(validEmail => {
+    it(`decodes valid email address ${validEmail}`, () => {
+      expect(isRight(validators.ValidEmail.decode(validEmail))).toEqual(true);
+    });
   });
 });
