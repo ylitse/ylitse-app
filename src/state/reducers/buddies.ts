@@ -12,7 +12,7 @@ import * as buddyApi from '../../api/buddies';
 import * as actions from '../actions';
 import * as types from '../types';
 
-export type State = types.AppState['buddies'];
+export type State = types.AppState['buddies']['buddies'];
 
 import { withToken } from './accessToken';
 import * as messageState from './messages';
@@ -92,7 +92,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
 const getBuddiesWithStatus = (status: buddyApi.Buddy['status']) =>
   flow(
-    ({ buddies }: types.AppState) => buddies,
+    ({ buddies: { buddies } }: types.AppState) => buddies,
     RD.map(buddies =>
       Object.values(buddies).filter(
         ({ status: buddyStatus }) => buddyStatus === status,

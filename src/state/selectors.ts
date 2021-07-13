@@ -36,7 +36,7 @@ export const getAccount = (state: AppState) =>
 
 export const getBuddyName = (
   buddyId: string,
-  buddyState: AppState['buddies'],
+  buddyState: AppState['buddies']['buddies'],
   mentorState: AppState['mentors'],
 ) => {
   const look = (fa: RD.RemoteData<unknown, Record<string, { name: string }>>) =>
@@ -57,7 +57,7 @@ export const getIsBanned =
   (buddyId: string): (({ buddies: remoteBuddies }: AppState) => boolean) =>
   ({ buddies: remoteBuddies }: AppState): boolean => {
     return pipe(
-      remoteBuddies,
+      remoteBuddies.buddies,
       RD.map(({ [buddyId]: buddy }) => {
         return buddy ? buddy.status === 'Banned' : false;
       }),
@@ -82,7 +82,7 @@ const messageList = (messageState: AppState['messages'], buddyId: string) => {
 export type Buddy = buddyApi.Buddy & { hasNewMessages: boolean };
 
 export function getChatList(
-  buddies: AppState['buddies'],
+  buddies: AppState['buddies']['buddies'],
   messageState: AppState['messages'],
 ): RD.RemoteData<string, Buddy[]> {
   return pipe(

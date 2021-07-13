@@ -130,6 +130,6 @@ export default ReactRedux.connect<
   state.AppState
 >(({ mentors, buddies }, { buddyId }) => {
   return {
-    name: selectors.getBuddyName(buddyId, buddies, mentors),
+    name: selectors.getBuddyName(buddyId, buddies.buddies, mentors),
   };
 })(Title);
