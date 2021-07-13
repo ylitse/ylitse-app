@@ -23,6 +23,8 @@ import * as deleteAccount from './deleteAccount';
 
 import * as actions from '../actions';
 
+import * as RD from '@devexperts/remote-data-ts';
+
 export type AppState = types.AppState;
 
 const exitReducer: automaton.Reducer<AppState, actions.Action> = (
@@ -78,7 +80,10 @@ export const initialState: AppState = {
 
   mentors: mentors.initialState,
   skillFilter: [],
-  buddies: buddies.initialState,
+  buddies: {
+    buddies: buddies.initialState,
+    banStatusChangeRequest: RD.initial,
+  },
   messages: messages.initialState,
   newMessage: {},
   markMessageSeen: {},

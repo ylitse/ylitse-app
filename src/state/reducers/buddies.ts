@@ -12,7 +12,7 @@ import * as buddyApi from '../../api/buddies';
 import * as actions from '../actions';
 import * as types from '../types';
 
-export type State = types.AppState['buddies'];
+export type State = types.AppState['buddies']['buddies'];
 
 import { withToken } from './accessToken';
 import * as messageState from './messages';
@@ -56,19 +56,20 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
           },
         ),
       );
+
     case 'buddies/completed':
       return RD.fromEither(action.payload);
 
     case 'buddies/changeBanStatus/start':
       return automaton.loop(
-        RD.pending,
+        state,
         withToken(
           buddyApi.banBuddy(action.payload.buddyId, action.payload.banStatus),
-          actions.make('buddies/changeStatus/end'),
+          actions.make('buddies/changeBanStatus/end'),
         ),
       );
 
-    case 'buddies/changeStatus/end':
+    case 'buddies/changeBanStatus/end':
       return pipe(
         action.payload,
         E.fold(
@@ -83,6 +84,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
             ),
         ),
       );
+
     default:
       return state;
   }
@@ -90,7 +92,7 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
 
 const getBuddiesWithStatus = (status: buddyApi.Buddy['status']) =>
   flow(
-    ({ buddies }: types.AppState) => buddies,
+    ({ buddies: { buddies } }: types.AppState) => buddies,
     RD.map(buddies =>
       Object.values(buddies).filter(
         ({ status: buddyStatus }) => buddyStatus === status,
