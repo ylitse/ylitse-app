@@ -64,7 +64,11 @@ type RegularActions = {
   'buddies/completed': Result<typeof buddyApi.fetchBuddies>;
   'buddies/changeBanStatus/start': {
     buddyId: string;
-    banStatus: 'Ban' | 'Unban';
+    banStatus: buddyApi.BanActions;
+  };
+  'buddies/changeBanStatusBatch/start': {
+    buddyIds: string[];
+    banStatus: buddyApi.BanActions;
   };
   'buddies/changeStatus/end': E.Either<string, buddyApi.Buddy>;
 

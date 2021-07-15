@@ -38,6 +38,12 @@ export const messages: { [key in MessageId]: string } = {
 
   'main.chat.ban': 'Ban chat',
   'main.chat.ban.confirmation': 'Are you sure you want to ban this user?',
+  'main.chat.delete': 'Delete chat',
+  'main.chat.delete.confirmation':
+    'Are you sure you want to delete this chat? This action cannot be undone.',
+  'main.chat.deleteAll': 'Delete all',
+  'main.chat.deleteAll.confirmation':
+    'Are you sure you want to delete all banned chats? This action cannot be undone.',
   'main.chat.navigation.banned': 'Banned',
   'main.chat.unban': 'Restore chat',
   'main.chat.unban.confirmation': 'Are you sure you want to restore this user?',

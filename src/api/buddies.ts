@@ -17,8 +17,9 @@ const buddyType = t.intersection([
   t.partial({ status: t.literal('banned') }),
 ]);
 
-export type BanActions = 'Ban' | 'Unban';
-export type BanStatuses = 'Banned' | 'NotBanned';
+export type BanActions = 'Ban' | 'Unban' | 'Delete';
+export type BanStatuses = 'Banned' | 'NotBanned' | 'Deleted';
+export type BanStatusStrings = 'banned' | 'ok' | 'deleted';
 
 export type Buddy = {
   buddyId: string;
@@ -31,6 +32,18 @@ const toBuddy = ({ id, display_name, status }: ApiBuddy): Buddy => ({
   name: display_name,
   status: status === 'banned' ? 'Banned' : 'NotBanned',
 });
+
+export function banActionToStatusString(action: BanActions): BanStatusStrings {
+  let statusStr: BanStatusStrings = 'ok';
+
+  if (action === 'Ban') {
+    statusStr = 'banned';
+  } else if (action === 'Delete') {
+    statusStr = 'deleted';
+  }
+
+  return statusStr;
+}
 
 export function fetchBuddies(
   accessToken: authApi.AccessToken,
@@ -54,11 +67,29 @@ const banRequest = (
   accessToken: authApi.AccessToken,
   status: BanActions,
 ) => {
-  const statusStr = status === 'Ban' ? 'banned' : 'ok';
-
   return http.put(
     `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
-    { status: statusStr },
+    { status: banActionToStatusString(status) },
+    {
+      headers: authApi.authHeader(accessToken),
+    },
+  );
+};
+
+const batchBanRequest = (
+  buddyIds: string[],
+  accessToken: authApi.AccessToken,
+  status: BanActions,
+) => {
+  let buddies = [];
+
+  for (const buddyId of buddyIds) {
+    buddies.push({ id: buddyId, status: banActionToStatusString(status) });
+  }
+
+  return http.patch(
+    `${config.baseUrl}/users/${accessToken.userId}/contacts`,
+    buddies,
     {
       headers: authApi.authHeader(accessToken),
     },
@@ -72,6 +103,18 @@ export function banBuddy(
   return accessToken =>
     http.validateResponse(
       banRequest(buddyId, accessToken, banStatus),
+      buddyType,
+      toBuddy,
+    );
+}
+
+export function banBuddies(
+  buddyIds: string[],
+  banStatus: BanActions,
+): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddy> {
+  return accessToken =>
+    http.validateResponse(
+      batchBanRequest(buddyIds, accessToken, banStatus),
       buddyType,
       toBuddy,
     );

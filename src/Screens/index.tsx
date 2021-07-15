@@ -19,7 +19,7 @@ import MentorCardExpanded, {
 } from './Main/MentorCardExpanded';
 
 import Chat, { ChatRoute } from './Main/Chat';
-import BannedList, { BannedListRoute } from './Main/BuddyList/BannedList';
+import BannedList, { BannedListRoute } from './Main/BannedList';
 import Logout, { LogoutRoute } from './Main/Settings/Logout';
 import DeleteAccount, {
   DeleteAccountRoute,
@@ -106,7 +106,7 @@ const routes: {
   'Main/Chat': {
     screen: Chat,
   },
-  'Main/BuddyList/BannedList': {
+  'Main/BannedList': {
     screen: BannedList,
   },
   'Main/Settings/Logout': {

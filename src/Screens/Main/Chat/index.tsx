@@ -36,6 +36,8 @@ const Chat = ({ navigation }: Props) => {
     dropdownOpen: false,
   });
 
+  const [deleteOption, setDeleteOption] = React.useState(false);
+
   const [{ height }, onLayout] = useLayout();
 
   const keyboardViewBehaviour =
@@ -62,22 +64,48 @@ const Chat = ({ navigation }: Props) => {
 
   const dialogProperties: Omit<DialogProps, 'onPressCancel' | 'buttonId'> =
     isBanned
-      ? {
-          textId: 'main.chat.unban.confirmation',
-          onPress: () => handleBan('Unban'),
-        }
+      ? deleteOption
+        ? {
+            textId: 'main.chat.delete.confirmation',
+            onPress: () => handleBan('Delete'),
+            type: 'warning',
+          }
+        : {
+            textId: 'main.chat.unban.confirmation',
+            onPress: () => handleBan('Unban'),
+          }
       : {
           textId: 'main.chat.ban.confirmation',
           onPress: () => handleBan('Ban'),
           type: 'warning',
         };
 
-  const dropdownItems: DropDownItem[] = [
-    {
-      textId: isBanned ? 'main.chat.unban' : 'main.chat.ban',
-      onPress: () => setDialogs('dialogOpen', true),
-    },
-  ];
+  const dropdownItems: DropDownItem[] = isBanned
+    ? [
+        {
+          textId: 'main.chat.unban',
+          onPress: () => {
+            setDeleteOption(false);
+            setDialogs('dialogOpen', true);
+          },
+        },
+        {
+          textId: 'main.chat.delete',
+          onPress: () => {
+            setDeleteOption(true);
+            setDialogs('dialogOpen', true);
+          },
+        },
+      ]
+    : [
+        {
+          textId: 'main.chat.ban',
+          onPress: () => {
+            setDeleteOption(false);
+            setDialogs('dialogOpen', true);
+          },
+        },
+      ];
 
   const setDialogs = (key: keyof DialogState, show: boolean) => {
     setDialogState({ ...dialogState, [key]: show });
