@@ -33,6 +33,18 @@ const toBuddy = ({ id, display_name, status }: ApiBuddy): Buddy => ({
   status: status === 'banned' ? 'Banned' : 'NotBanned',
 });
 
+export function banActionToStatusString(action: BanActions): BanStatusStrings {
+  let statusStr: BanStatusStrings = 'ok';
+
+  if (action === 'Ban') {
+    statusStr = 'banned';
+  } else if (action === 'Delete') {
+    statusStr = 'deleted';
+  }
+
+  return statusStr;
+}
+
 export function fetchBuddies(
   accessToken: authApi.AccessToken,
 ): TE.TaskEither<string, Record<string, Buddy>> {
@@ -55,11 +67,29 @@ const banRequest = (
   accessToken: authApi.AccessToken,
   status: BanActions,
 ) => {
-  const statusStr: BanStatusStrings = status === 'Ban' ? 'banned' : 'ok';
-
   return http.put(
     `${config.baseUrl}/users/${accessToken.userId}/contacts/${buddyId}`,
-    { status: statusStr },
+    { status: banActionToStatusString(status) },
+    {
+      headers: authApi.authHeader(accessToken),
+    },
+  );
+};
+
+const batchBanRequest = (
+  buddyIds: string[],
+  accessToken: authApi.AccessToken,
+  status: BanActions,
+) => {
+  let buddies = [];
+
+  for (const buddyId of buddyIds) {
+    buddies.push({ id: buddyId, status: banActionToStatusString(status) });
+  }
+
+  return http.patch(
+    `${config.baseUrl}/users/${accessToken.userId}/contacts`,
+    buddies,
     {
       headers: authApi.authHeader(accessToken),
     },
@@ -78,27 +108,13 @@ export function banBuddy(
     );
 }
 
-const deleteRequest = (
+export function banBuddies(
   buddyIds: string[],
-  accessToken: authApi.AccessToken,
-) => {
-  const buddyString = buddyIds.join(',');
-  const params = `?contact_user_ids=${buddyString}`;
-
-  return http.destroy(
-    `${config.baseUrl}/users/${accessToken.userId}/contacts${params}`,
-    {
-      headers: authApi.authHeader(accessToken),
-    },
-  );
-};
-
-export function deleteBuddies(
-  buddyIds: string[],
+  banStatus: BanActions,
 ): (accessToken: authApi.AccessToken) => TE.TaskEither<string, Buddy> {
   return accessToken =>
     http.validateResponse(
-      deleteRequest(buddyIds, accessToken),
+      batchBanRequest(buddyIds, accessToken, banStatus),
       buddyType,
       toBuddy,
     );

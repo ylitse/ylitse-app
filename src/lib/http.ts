@@ -39,9 +39,10 @@ export const put = (url: string, body: any, options?: RequestInit) =>
     method: 'PUT',
     ...(options || {}),
   });
-export const destroy = (url: string, options?: RequestInit) =>
+export const patch = (url: string, body: any, options?: RequestInit) =>
   request(url, {
-    method: 'DELETE',
+    body: JSON.stringify(body),
+    method: 'PATCH',
     ...(options || {}),
   });
 

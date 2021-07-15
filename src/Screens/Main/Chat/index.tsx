@@ -50,18 +50,10 @@ const Chat = ({ navigation }: Props) => {
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
   const setBanStatus = (banStatus: BanActions) => {
-    if (banStatus === 'Delete') {
-      const buddyIds: string[] = [buddyId];
-      dispatch({
-        type: 'buddies/delete/start',
-        payload: { buddyIds },
-      });
-    } else {
-      dispatch({
-        type: 'buddies/changeBanStatus/start',
-        payload: { buddyId, banStatus },
-      });
-    }
+    dispatch({
+      type: 'buddies/changeBanStatus/start',
+      payload: { buddyId, banStatus },
+    });
   };
 
   const handleBan = (banStatus: BanActions) => {

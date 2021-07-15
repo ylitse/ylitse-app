@@ -19,6 +19,7 @@ import { Title } from './Title';
 
 import colors from '../../components/colors';
 import RemoteData from '../../components/RemoteData';
+import { BanActions } from 'src/api/buddies';
 
 export type BannedListRoute = {
   'Main/BannedList': {};
@@ -48,20 +49,20 @@ export default ({ navigation }: Props) => {
 
   const dispatch = ReactRedux.useDispatch<redux.Dispatch<actions.Action>>();
 
-  const handleDeleteAll = () => {
+  const handleBatchBan = (banStatus: BanActions) => {
     if (RD.isSuccess(remoteBuddies)) {
       setDialogState({ dropdownOpen: false, dialogOpen: false });
       const buddyIds = remoteBuddies.value.map(buddy => buddy.buddyId);
       dispatch({
-        type: 'buddies/delete/start',
-        payload: { buddyIds },
+        type: 'buddies/changeBanStatusBatch/start',
+        payload: { buddyIds, banStatus },
       });
     }
   };
 
   const dialogProperties: Omit<DialogProps, 'onPressCancel' | 'buttonId'> = {
     textId: 'main.chat.deleteAll.confirmation',
-    onPress: () => handleDeleteAll(),
+    onPress: () => handleBatchBan('Delete'),
     type: 'warning',
   };
 

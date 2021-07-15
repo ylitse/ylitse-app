@@ -68,6 +68,18 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
         ),
       );
 
+    case 'buddies/changeBanStatusBatch/start':
+      return automaton.loop(
+        RD.pending,
+        withToken(
+          buddyApi.banBuddies(
+            action.payload.buddyIds,
+            action.payload.banStatus,
+          ),
+          actions.make('buddies/changeStatus/end'),
+        ),
+      );
+
     case 'buddies/changeStatus/end':
       return pipe(
         action.payload,
@@ -81,14 +93,6 @@ export const reducer: automaton.Reducer<State, actions.Action> = (
                 [buddy.buddyId]: buddy,
               })),
             ),
-        ),
-      );
-    case 'buddies/delete/start':
-      return automaton.loop(
-        RD.pending,
-        withToken(
-          buddyApi.deleteBuddies(action.payload.buddyIds),
-          actions.make('buddies/changeStatus/end'),
         ),
       );
     default:
